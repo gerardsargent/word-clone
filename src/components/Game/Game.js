@@ -13,7 +13,7 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
-  const [guessesList, setGuessesList] = React.useState(
+  const [guessesList, setGuessesList] = React.useState(() =>
     range(0, NUM_OF_GUESSES_ALLOWED).map(() => {
       return {
         guessId: crypto.randomUUID(),
@@ -26,13 +26,19 @@ function Game() {
       };
     })
   );
+  const [turnNumber, setTurnNumber] = React.useState(0);
 
   console.log({ guessesList });
 
   return (
     <>
       <GuessResults guessesList={guessesList} />
-      <GuessInput guessesList={guessesList} setGuessesList={setGuessesList} />
+      <GuessInput
+        guessesList={guessesList}
+        setGuessesList={setGuessesList}
+        turnNumber={turnNumber}
+        setTurnNumber={setTurnNumber}
+      />
     </>
   );
 }

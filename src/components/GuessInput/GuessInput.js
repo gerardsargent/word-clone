@@ -1,7 +1,12 @@
 import React from "react";
 import { ALLOWED_GUESS_LENGTH } from "../../constants";
 
-function GuessInput({ guessesList, setGuessesList }) {
+function GuessInput({
+  guessesList,
+  setGuessesList,
+  turnNumber,
+  setTurnNumber,
+}) {
   const [currentGuess, setCurrentGuess] = React.useState("");
 
   const handleChange = (value) => {
@@ -20,9 +25,11 @@ function GuessInput({ guessesList, setGuessesList }) {
       guessId: crypto.randomUUID(),
       guess: currentGuessLetters,
     };
-    const nextGuessesList = [...guessesList, nextGuess];
+    const nextGuessesList = [...guessesList];
+    nextGuessesList[turnNumber] = nextGuess;
 
     setGuessesList(nextGuessesList);
+    setTurnNumber(turnNumber + 1);
     setCurrentGuess("");
   };
 
