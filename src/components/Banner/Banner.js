@@ -1,5 +1,4 @@
 import React from "react";
-import ResetGameButton from "../ResetGameButton/ResetGameButton";
 
 function Banner({ answer, handleResetGame, hasWon, turnNumber }) {
   return (
