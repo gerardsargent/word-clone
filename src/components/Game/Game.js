@@ -1,36 +1,32 @@
 import React from "react";
 
-import { ALLOWED_GUESS_LENGTH, NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { WORDS } from "../../data";
+import { generateNewGuessList } from "../../game-helpers";
 import "../../styles.css";
-import { range, sample } from "../../utils";
+import { sample } from "../../utils";
 import Banner from "../Banner/Banner";
 import GuessInput from "../GuessInput/GuessInput";
 import GuessResults from "../GuessResults/GuessResults";
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
-
 function Game() {
+  const generateAnswer = () => sample(WORDS);
+  const [answer, setAnswer] = React.useState(() => generateAnswer());
   const [hasWon, setHasWon] = React.useState(false);
   const [hasLost, setHasLost] = React.useState(false);
   const [guessesList, setGuessesList] = React.useState(() =>
-    range(0, NUM_OF_GUESSES_ALLOWED).map(() => {
-      return {
-        guessId: crypto.randomUUID(),
-        guess: range(0, ALLOWED_GUESS_LENGTH).map(() => {
-          return {
-            letterId: crypto.randomUUID(),
-            letter: "",
-            status: null,
-          };
-        }),
-      };
-    })
+    generateNewGuessList()
   );
   const [turnNumber, setTurnNumber] = React.useState(0);
+
+  console.log({ answer });
+
+  const handleResetGame = () => {
+    setHasWon(false);
+    setHasLost(false);
+    setTurnNumber(0);
+    setGuessesList(generateNewGuessList());
+    setAnswer(sample(WORDS));
+  };
 
   return (
     <>
@@ -46,7 +42,12 @@ function Game() {
         turnNumber={turnNumber}
       />
       {(hasWon || hasLost) && (
-        <Banner answer={answer} hasWon={hasWon} turnNumber={turnNumber} />
+        <Banner
+          answer={answer}
+          handleResetGame={handleResetGame}
+          hasWon={hasWon}
+          turnNumber={turnNumber}
+        />
       )}
     </>
   );

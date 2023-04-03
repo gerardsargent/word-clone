@@ -1,6 +1,6 @@
 import React from "react";
 import { ALLOWED_GUESS_LENGTH, NUM_OF_GUESSES_ALLOWED } from "../../constants";
-import { checkLetter } from "../../game-helpers";
+import { checkLetter, emptyCurrentGuess } from "../../game-helpers";
 import OnScreenKeyboard from "../OnScreenKeyboard/OnScreenKeyboard";
 
 function GuessInput({
@@ -12,9 +12,7 @@ function GuessInput({
   setTurnNumber,
   turnNumber,
 }) {
-  const [currentGuess, setCurrentGuess] = React.useState([
-    ...guessesList[turnNumber].guess,
-  ]);
+  const [currentGuess, setCurrentGuess] = React.useState(emptyCurrentGuess);
   const [currentLetterPosition, setCurrentLetterPosition] = React.useState(0);
 
   const handleLetterInput = (letter) => {
@@ -91,6 +89,8 @@ function GuessInput({
 
     if (isCorrectAnswer) {
       setHasWon(true);
+      setCurrentLetterPosition(0);
+      setCurrentGuess(emptyCurrentGuess);
       return;
     }
 
@@ -98,6 +98,8 @@ function GuessInput({
 
     if (nextTurnNumber === NUM_OF_GUESSES_ALLOWED) {
       setHasLost(true);
+      setCurrentLetterPosition(0);
+      setCurrentGuess(emptyCurrentGuess);
       return;
     }
 

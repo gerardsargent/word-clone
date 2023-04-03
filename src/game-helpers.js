@@ -1,7 +1,5 @@
-/**
- * Thanks to Github user dylano for supplying a more-accurate
- * solving algorithm!
- */
+import { ALLOWED_GUESS_LENGTH, NUM_OF_GUESSES_ALLOWED } from "./constants";
+import { range } from "./utils";
 
 export function checkLetter({ guessedLetter, answerLetter, answer }) {
   // Step 1: Look for correct letters.
@@ -27,3 +25,25 @@ export function checkLetter({ guessedLetter, answerLetter, answer }) {
     status,
   };
 }
+
+export const generateNewGuessList = () =>
+  range(0, NUM_OF_GUESSES_ALLOWED).map(() => {
+    return {
+      guessId: crypto.randomUUID(),
+      guess: range(0, ALLOWED_GUESS_LENGTH).map(() => {
+        return {
+          letterId: crypto.randomUUID(),
+          letter: "",
+          status: null,
+        };
+      }),
+    };
+  });
+
+export const emptyCurrentGuess = range(0, ALLOWED_GUESS_LENGTH).map(() => {
+  return {
+    letterId: crypto.randomUUID(),
+    letter: "",
+    status: null,
+  };
+});

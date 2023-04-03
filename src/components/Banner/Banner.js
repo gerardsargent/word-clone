@@ -1,6 +1,7 @@
 import React from "react";
+import ResetGameButton from "../ResetGameButton/ResetGameButton";
 
-function Banner({ answer, hasWon, turnNumber }) {
+function Banner({ answer, handleResetGame, hasWon, turnNumber }) {
   return (
     <div className={`${hasWon ? "happy" : "sad"} banner`}>
       {hasWon ? (
@@ -15,6 +16,7 @@ function Banner({ answer, hasWon, turnNumber }) {
           Sorry, the correct answer is <strong>{answer}</strong>.
         </p>
       )}
+      <button onClick={handleResetGame}>Play again</button>
     </div>
   );
 }
