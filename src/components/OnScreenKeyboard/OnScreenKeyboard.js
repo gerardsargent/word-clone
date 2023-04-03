@@ -1,6 +1,7 @@
 import React from "react";
 
 const OnScreenKeyboard = ({
+  previousGuess,
   handleDelete,
   handleEnter,
   handleLetterInput,
@@ -16,17 +17,24 @@ const OnScreenKeyboard = ({
     <div className="keyboard-wrapper">
       {letterRows.map((row) => (
         <div key={crypto.randomUUID()} className="keyboard-row">
-          {row.map((letter) => (
-            <button
-              className="input-key"
-              key={letter}
-              type="button"
-              disabled={!isAllowedToType}
-              onClick={() => handleLetterInput(letter)}
-            >
-              {letter}
-            </button>
-          ))}
+          {row.map((letter) => {
+            const guessedLetter = previousGuess.find(
+              (guess) => guess.letter === letter
+            );
+            const status = guessedLetter?.status || null;
+
+            return (
+              <button
+                className={`input-key ${status}`}
+                key={letter}
+                type="button"
+                disabled={!isAllowedToType}
+                onClick={() => handleLetterInput(letter)}
+              >
+                {letter}
+              </button>
+            );
+          })}
         </div>
       ))}
       <div className="keyboard-row">

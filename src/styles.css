@@ -198,14 +198,30 @@ h1 {
 }
 .input-key {
   align-items: center;
-  background-color: grey;
+  background-color: white;
   border-radius: 5px;
   display: flex;
   justify-content: center;
-  border: 1px solid black;
+  color: var(--color-gray-300);
+  border: 1px solid var(--color-gray-300);
   height: 75px;
   margin: 10px;
   width: 75px;
+}
+.input-key.correct {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+}
+.input-key.incorrect {
+  background: var(--color-gray-300);
+  border-color: var(--color-gray-300);
+  color: white;
+}
+.input-key.misplaced {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: white;
 }
 .action-key {
   width: 300px;

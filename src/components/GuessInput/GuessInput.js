@@ -108,6 +108,7 @@ function GuessInput({
 
   return (
     <OnScreenKeyboard
+      previousGuess={guessesList[turnNumber > 0 ? turnNumber - 1 : 0].guess}
       handleLetterInput={handleLetterInput}
       handleDelete={handleDelete}
       handleEnter={handleSubmit}
