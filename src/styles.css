@@ -185,6 +185,32 @@ h1 {
   color: white;
 }
 
+.keyboard-wrapper {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.keyboard-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input-key {
+  align-items: center;
+  background-color: grey;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
+  height: 75px;
+  margin: 10px;
+  width: 75px;
+}
+.action-key {
+  width: 300px;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;

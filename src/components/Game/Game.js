@@ -31,11 +31,6 @@ function Game() {
     })
   );
   const [turnNumber, setTurnNumber] = React.useState(0);
-  const [livesRemaining, setLivesRemaining] = React.useState(
-    NUM_OF_GUESSES_ALLOWED
-  );
-
-  console.log({ guessesList });
 
   return (
     <>
@@ -44,11 +39,9 @@ function Game() {
         answer={answer}
         guessesList={guessesList}
         isGameOver={hasWon || hasLost}
-        livesRemaining={livesRemaining}
         setGuessesList={setGuessesList}
         setHasLost={setHasLost}
         setHasWon={setHasWon}
-        setLivesRemaining={setLivesRemaining}
         setTurnNumber={setTurnNumber}
         turnNumber={turnNumber}
       />

@@ -3,7 +3,7 @@
  * solving algorithm!
  */
 
-export function checkLetters({ guessedLetter, answerLetter, answer }) {
+export function checkLetter({ guessedLetter, answerLetter, answer }) {
   // Step 1: Look for correct letters.
   if (guessedLetter === answerLetter) {
     return {

@@ -1,28 +1,74 @@
 import React from "react";
-import { ALLOWED_GUESS_LENGTH } from "../../constants";
-import { checkLetters } from "../../game-helpers";
+import { ALLOWED_GUESS_LENGTH, NUM_OF_GUESSES_ALLOWED } from "../../constants";
+import { checkLetter } from "../../game-helpers";
+import OnScreenKeyboard from "../OnScreenKeyboard/OnScreenKeyboard";
 
 function GuessInput({
   answer,
   guessesList,
-  isGameOver,
-  livesRemaining,
   setGuessesList,
   setHasLost,
   setHasWon,
-  setLivesRemaining,
   setTurnNumber,
   turnNumber,
 }) {
-  const [currentGuess, setCurrentGuess] = React.useState("");
+  const [currentGuess, setCurrentGuess] = React.useState([
+    ...guessesList[turnNumber].guess,
+  ]);
+  const [currentLetterPosition, setCurrentLetterPosition] = React.useState(0);
 
-  const handleChange = (value) => {
-    setCurrentGuess(value);
+  const handleLetterInput = (letter) => {
+    if (currentLetterPosition < ALLOWED_GUESS_LENGTH) {
+      const nextCurrentGuess = [...currentGuess];
+
+      nextCurrentGuess[currentLetterPosition] = {
+        letterId: crypto.randomUUID(),
+        letter,
+        status: null,
+      };
+
+      const nextGuess = {
+        guessId: crypto.randomUUID(),
+        guess: nextCurrentGuess,
+      };
+
+      const nextGuessesList = [...guessesList];
+      nextGuessesList[turnNumber] = nextGuess;
+
+      setGuessesList(nextGuessesList);
+      setCurrentLetterPosition(currentLetterPosition + 1);
+      setCurrentGuess(nextCurrentGuess);
+    }
+  };
+
+  const handleDelete = () => {
+    if (currentLetterPosition > 0) {
+      const nextLetterPosition = currentLetterPosition - 1;
+      const nextCurrentGuess = [...currentGuess];
+
+      nextCurrentGuess[nextLetterPosition] = {
+        letterId: crypto.randomUUID(),
+        letter: "",
+        status: null,
+      };
+
+      const nextGuess = {
+        guessId: crypto.randomUUID(),
+        guess: nextCurrentGuess,
+      };
+
+      const nextGuessesList = [...guessesList];
+      nextGuessesList[turnNumber] = nextGuess;
+
+      setGuessesList(nextGuessesList);
+      setCurrentLetterPosition(nextLetterPosition);
+      setCurrentGuess(nextCurrentGuess);
+    }
   };
 
   const handleSubmit = () => {
-    const currentGuessLetters = currentGuess.split("").map((letter, index) => {
-      return checkLetters({
+    const guessToSubmit = currentGuess.map(({ letter }, index) => {
+      return checkLetter({
         guessedLetter: letter,
         answerLetter: answer[index],
         answer,
@@ -31,7 +77,7 @@ function GuessInput({
 
     const nextGuess = {
       guessId: crypto.randomUUID(),
-      guess: currentGuessLetters,
+      guess: guessToSubmit,
     };
 
     const nextGuessesList = [...guessesList];
@@ -48,35 +94,24 @@ function GuessInput({
       return;
     }
 
-    if (livesRemaining === 1) {
+    const nextTurnNumber = turnNumber + 1;
+
+    if (nextTurnNumber === NUM_OF_GUESSES_ALLOWED) {
       setHasLost(true);
       return;
     }
 
-    setLivesRemaining(livesRemaining - 1);
-    setTurnNumber(turnNumber + 1);
-    setCurrentGuess("");
+    setCurrentGuess([...guessesList[nextTurnNumber].guess]);
+    setCurrentLetterPosition(0);
+    setTurnNumber(nextTurnNumber);
   };
 
   return (
-    <form
-      onSubmit={(event) => {
-        event.preventDefault();
-
-        handleSubmit();
-      }}
-      className="guess-input-wrapper"
-    >
-      <label htmlFor="guess-input">Enter guess:</label>
-      <input
-        value={currentGuess}
-        onChange={(event) => handleChange(event.target.value.toUpperCase())}
-        id="guess-input"
-        type="text"
-        pattern={`[A-Za-z]{${ALLOWED_GUESS_LENGTH}}`}
-        disabled={isGameOver}
-      />
-    </form>
+    <OnScreenKeyboard
+      handleLetterInput={handleLetterInput}
+      handleDelete={handleDelete}
+      handleEnter={handleSubmit}
+    />
   );
 }
 
