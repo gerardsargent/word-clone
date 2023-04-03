@@ -1,7 +1,9 @@
 import React from "react";
 import { ALLOWED_GUESS_LENGTH } from "../../constants";
+import { checkLetters } from "../../game-helpers";
 
 function GuessInput({
+  answer,
   guessesList,
   setGuessesList,
   turnNumber,
@@ -14,11 +16,12 @@ function GuessInput({
   };
 
   const handleSubmit = () => {
-    const currentGuessLetters = currentGuess.split("").map((letter) => {
-      return {
-        letterId: crypto.randomUUID(),
-        letter,
-      };
+    const currentGuessLetters = currentGuess.split("").map((letter, index) => {
+      return checkLetters({
+        guessedLetter: letter,
+        answerLetter: answer[index],
+        answer,
+      });
     });
 
     const nextGuess = {

@@ -21,6 +21,7 @@ function Game() {
           return {
             letterId: crypto.randomUUID(),
             letter: "",
+            status: "incorrect",
           };
         }),
       };
@@ -34,6 +35,7 @@ function Game() {
     <>
       <GuessResults guessesList={guessesList} />
       <GuessInput
+        answer={answer}
         guessesList={guessesList}
         setGuessesList={setGuessesList}
         turnNumber={turnNumber}
