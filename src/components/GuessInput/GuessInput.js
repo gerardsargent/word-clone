@@ -5,9 +5,14 @@ import { checkLetters } from "../../game-helpers";
 function GuessInput({
   answer,
   guessesList,
+  isGameOver,
+  livesRemaining,
   setGuessesList,
-  turnNumber,
+  setHasLost,
+  setHasWon,
+  setLivesRemaining,
   setTurnNumber,
+  turnNumber,
 }) {
   const [currentGuess, setCurrentGuess] = React.useState("");
 
@@ -28,10 +33,27 @@ function GuessInput({
       guessId: crypto.randomUUID(),
       guess: currentGuessLetters,
     };
+
     const nextGuessesList = [...guessesList];
     nextGuessesList[turnNumber] = nextGuess;
 
     setGuessesList(nextGuessesList);
+
+    const isCorrectAnswer = nextGuess.guess.every(
+      ({ status }) => status === "correct"
+    );
+
+    if (isCorrectAnswer) {
+      setHasWon(true);
+      return;
+    }
+
+    if (livesRemaining === 1) {
+      setHasLost(true);
+      return;
+    }
+
+    setLivesRemaining(livesRemaining - 1);
     setTurnNumber(turnNumber + 1);
     setCurrentGuess("");
   };
@@ -52,6 +74,7 @@ function GuessInput({
         id="guess-input"
         type="text"
         pattern={`[A-Za-z]{${ALLOWED_GUESS_LENGTH}}`}
+        disabled={isGameOver}
       />
     </form>
   );

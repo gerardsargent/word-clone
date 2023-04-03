@@ -1,8 +1,6 @@
 import React from "react";
 
 function GuessResults({ guessesList }) {
-  console.log({ guessesList });
-
   return (
     <div className="guess-results">
       {guessesList.map(({ guessId, guess }) => {

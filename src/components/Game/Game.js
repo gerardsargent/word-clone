@@ -4,6 +4,7 @@ import { ALLOWED_GUESS_LENGTH, NUM_OF_GUESSES_ALLOWED } from "../../constants";
 import { WORDS } from "../../data";
 import "../../styles.css";
 import { range, sample } from "../../utils";
+import Banner from "../Banner/Banner";
 import GuessInput from "../GuessInput/GuessInput";
 import GuessResults from "../GuessResults/GuessResults";
 
@@ -13,6 +14,8 @@ const answer = sample(WORDS);
 console.info({ answer });
 
 function Game() {
+  const [hasWon, setHasWon] = React.useState(false);
+  const [hasLost, setHasLost] = React.useState(false);
   const [guessesList, setGuessesList] = React.useState(() =>
     range(0, NUM_OF_GUESSES_ALLOWED).map(() => {
       return {
@@ -21,13 +24,16 @@ function Game() {
           return {
             letterId: crypto.randomUUID(),
             letter: "",
-            status: "incorrect",
+            status: null,
           };
         }),
       };
     })
   );
   const [turnNumber, setTurnNumber] = React.useState(0);
+  const [livesRemaining, setLivesRemaining] = React.useState(
+    NUM_OF_GUESSES_ALLOWED
+  );
 
   console.log({ guessesList });
 
@@ -37,10 +43,18 @@ function Game() {
       <GuessInput
         answer={answer}
         guessesList={guessesList}
+        isGameOver={hasWon || hasLost}
+        livesRemaining={livesRemaining}
         setGuessesList={setGuessesList}
-        turnNumber={turnNumber}
+        setHasLost={setHasLost}
+        setHasWon={setHasWon}
+        setLivesRemaining={setLivesRemaining}
         setTurnNumber={setTurnNumber}
+        turnNumber={turnNumber}
       />
+      {(hasWon || hasLost) && (
+        <Banner answer={answer} hasWon={hasWon} turnNumber={turnNumber} />
+      )}
     </>
   );
 }
