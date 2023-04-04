@@ -126,8 +126,9 @@ h1 {
 }
 
 .cell.correct.grow {
-  animation: grow 2000ms;
+  animation: grow 1250ms;
   will-change: transform;
+  animation-timing-function: ease-in-out;
   z-index: 2;
 }
 .cell.correct {
