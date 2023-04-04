@@ -92,6 +92,7 @@ h1 {
 
 .guess {
   display: flex;
+  position: relative;
   gap: 4px;
   margin-bottom: 4px;
 }
@@ -124,6 +125,11 @@ h1 {
   --radius: 0px 0px 0px 4px;
 }
 
+.cell.correct.grow {
+  animation: grow 2000ms;
+  will-change: transform;
+  z-index: 2;
+}
 .cell.correct {
   background: var(--color-success);
   border-color: var(--color-success);
@@ -270,5 +276,17 @@ h1 {
   }
   to {
     transform: translateY(0%);
+  }
+}
+
+@keyframes grow {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
