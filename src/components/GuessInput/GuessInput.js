@@ -108,9 +108,13 @@ function GuessInput({
     setTurnNumber(nextTurnNumber);
   };
 
+  const previousGuesses = guessesList
+    .flatMap(({ guess }) => guess)
+    .filter(({ letter, status }) => letter !== "" && status);
+
   return (
     <OnScreenKeyboard
-      previousGuess={guessesList[turnNumber > 0 ? turnNumber - 1 : 0].guess}
+      previousGuesses={previousGuesses}
       handleLetterInput={handleLetterInput}
       handleDelete={handleDelete}
       handleEnter={handleSubmit}

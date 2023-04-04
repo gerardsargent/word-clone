@@ -1,7 +1,7 @@
 import React from "react";
 
 const OnScreenKeyboard = ({
-  previousGuess,
+  previousGuesses,
   handleDelete,
   handleEnter,
   handleLetterInput,
@@ -18,9 +18,9 @@ const OnScreenKeyboard = ({
       {letterRows.map((row) => (
         <div key={crypto.randomUUID()} className="keyboard-row">
           {row.map((letter) => {
-            const guessedLetter = previousGuess.find(
-              (guess) => guess.letter === letter
-            );
+            const guessedLetter = previousGuesses.length
+              ? previousGuesses.findLast((guess) => guess.letter === letter)
+              : null;
             const status = guessedLetter?.status || null;
 
             return (
